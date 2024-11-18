@@ -16,7 +16,7 @@ El `Makefile` está configurado para usar Docker por defecto, para no usar Docke
 
    ```bash
    sudo apt update
-   sudo apt install make cmake gcc libmicrohttpd-dev
+   sudo apt install make cmake gcc libmicrohttpd-dev libcjson-dev
    ```
 
 2. **Modificar el Makefile**:

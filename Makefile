@@ -18,10 +18,6 @@ LDFLAGS = -L$(PROMETHEUS_LIB_DIR) -lprom -pthread -lpromhttp -lcjson
 
 export LD_LIBRARY_PATH := $(PROMETHEUS_LIB_DIR):$(LD_LIBRARY_PATH)
 
-check_dependencies:
-	sudo apt-get update
-	sudo apt-get install -y libmicrohttpd-dev libcjson-dev
-
 clone_prometheus: check_dependencies
 	git clone $(PROMETHEUS_REPO) $(PROMETHEUS_DIR)
 
