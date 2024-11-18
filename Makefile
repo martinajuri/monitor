@@ -4,7 +4,6 @@ CC = gcc
 
 SRC_DIR = src
 INCLUDE_DIR = include
-PROMETHEUS_REPO = https://github.com/digitalocean/prometheus-client-c
 PROMETHEUS_DIR = prometheus-client-c
 BUILD_DIR_PROM = $(PROMETHEUS_DIR)/prom/build
 BUILD_DIR_PROMHTTP = $(PROMETHEUS_DIR)/promhttp/build
@@ -18,21 +17,7 @@ LDFLAGS = -L$(PROMETHEUS_LIB_DIR) -lprom -pthread -lpromhttp -lcjson
 
 export LD_LIBRARY_PATH := $(PROMETHEUS_LIB_DIR):$(LD_LIBRARY_PATH)
 
-clone_prometheus:
-	git clone $(PROMETHEUS_REPO) $(PROMETHEUS_DIR)
-
-modify_source:
-	sed -i '32s/int/enum MHD_Result/' $(PROMETHEUS_DIR)/promhttp/src/promhttp.c
-	sed -i '64s/MHD_AccessHandlerCallback/((MHD_AccessHandlerCallback)promhttp/' $(PROMETHEUS_DIR)/promhttp/src/promhttp.c
-	sed -i '64s/(MHD_AccessHandlerCallback)/(MHD_AccessHandlerCallback)promhttp/' $(PROMETHEUS_DIR)/promhttp/src/promhttp.c
-
-build_prometheus: clone_prometheus modify_source
-	mkdir -p $(BUILD_DIR_PROM)
-	cd $(BUILD_DIR_PROM) && cmake ../ && make && sudo make install
-	mkdir -p $(BUILD_DIR_PROMHTTP)
-	cd $(BUILD_DIR_PROMHTTP) && cmake ../ && make && sudo make install
-
-all: build_prometheus $(TARGET)
+all: $(TARGET)
 
 $(TARGET): $(SRCS)
 	$(CC) $(SRCS) -o $(TARGET) $(CFLAGS) $(LDFLAGS)
